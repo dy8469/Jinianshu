@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>入党纪念书 · 农工党吉林省委员会</title>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
+    </script>
+    <style>
+        /* ===== 全局重置 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: #8B1A1A;
+        }
+
+        .view {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* ===== 首页视图 ===== */
+        #homeView {
+            background-image: url('111.jpg');
+            background-size: cover;
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-color: #8B1A1A;
+            background-attachment: scroll;
+            min-height: 100vh;
+            padding-top: 500px;          /* 调整为 500px */
+            padding-bottom: 20px;
+            width: 100%;
+        }
+
+        .home-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 32px 22px 36px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.30);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #4a2c1a;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+        .form-group label .required {
+            color: #c0392b;
+            margin-left: 2px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 16px;
+            border: 2px solid #dccfc4;
+            border-radius: 14px;
+            background: #fdfaf7;
+            color: #2c1810;
+            transition: border 0.25s, box-shadow 0.25s;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #b8860b;
+            box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.15);
+            background: #fff;
+        }
+        .form-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b1a1a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 44px;
+        }
+
+        .btn-generate {
+            width: 100%;
+            padding: 16px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #8b1a1a 0%, #b22222 100%);
+            border: none;
+            border-radius: 16px;
+            letter-spacing: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 8px 24px rgba(139, 26, 26, 0.35);
+            margin-top: 6px;
+            font-family: inherit;
+        }
+        .btn-generate:active {
+            transform: scale(0.96);
+            box-shadow: 0 4px 12px rgba(139, 26, 26, 0.25);
+        }
+        .btn-generate:disabled {
+            opacity: 0.6;
+            transform: scale(0.98);
+            box-shadow: none;
+        }
+
+        .participant-count {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 15px;
+            color: #4a2c1a;
+            letter-spacing: 2px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(184, 134, 11, 0.2);
+        }
+        .participant-count .num {
+            font-weight: 700;
+            color: #8b1a1a;
+            font-size: 22px;
+        }
+
+        /* ===== 结果视图 ===== */
+        #resultView {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #8B1A1A;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        #resultView.active {
+            display: flex;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.93);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 24px 18px 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0e3d8;
+        }
+        .result-header .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8b1a1a;
+            letter-spacing: 2px;
+        }
+        .result-header .title small {
+            font-weight: 400;
+            font-size: 13px;
+            color: #a0522d;
+            margin-left: 8px;
+        }
+
+        .btn-back {
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #8b1a1a;
+            background: #f5ede7;
+            border: 2px solid #dccfc4;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-family: inherit;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        .btn-back:active {
+            transform: scale(0.94);
+            background: #e8dbd0;
+        }
+
+        #certificateImageWrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 4px 0 8px;
+        }
+        #certificateImageWrapper img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+            display: block;
+            background: #fcf6ed;
+            border: 2px solid #d4a84b;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: default;
+        }
+
+        .save-hint {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+            letter-spacing: 2px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px 18px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .save-hint .icon {
+            display: inline-block;
+            margin-right: 6px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* ===== 纪念书容器（截图用） ===== */
+        #certificateContainer {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+            transition: opacity 0.2s;
+        }
+
+        #certificate {
+            width: 100%;
+            aspect-ratio: 1 / 1.42;
+            background-image: url('2222.png');
+            background-size: cover;
+            background-position: center;
+            background-color: #fcf6ed;
+            padding: 180px 36px 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #000;
+            font-size: 16px;
+            font-family: "华文楷体", "STKaiti", "KaiTi", "楷体", "SimSun", serif;
+        }
+
+        .cert-body,
+        .cert-footer,
+        .cert-disclaimer,
+        .cert-text,
+        .cert-text *,
+        .cert-footer *,
+        .cert-disclaimer {
+            color: #000 !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+        }
+
+        .cert-body {
+            flex: 0 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 0;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cert-text {
+            line-height: 2;
+            letter-spacing: 1px;
+            padding: 0 2px;
+        }
+
+        .cert-text .highlight-name {
+            font-weight: 700;
+        }
+
+        .cert-text .indent {
+            text-indent: 2em;
+            display: block;
+        }
+
+        .cert-text .highlight-years {
+            font-weight: 700;
+        }
+        .cert-text .highlight-years-num {
+            font-weight: 900;
+        }
+
+        .cert-spacer {
+            height: 0.4em;
+        }
+
+        .cert-footer {
+            margin-top: 2.0em;
+            padding-top: 0.2em;
+            text-align: right;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cert-footer .org {
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .cert-footer .date {
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .cert-disclaimer {
+            position: absolute;
+            bottom: 34px;
+            left: 36px;
+            font-size: 10px !important;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            text-align: left;
+            white-space: nowrap;
+            z-index: 2;
+        }
+
+        .cert-stamp {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            background: url('stamp.png') no-repeat center / contain;
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        /* ===== 加载遮罩 ===== */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.50);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            flex-direction: column;
+        }
+        .loading-overlay.show {
+            display: flex;
+        }
+        .loading-overlay .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255, 255, 255, 0.25);
+            border-top-color: #f5d742;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .loading-overlay .loading-text {
+            color: #fff;
+            font-size: 16px;
+            letter-spacing: 3px;
+            margin-top: 16px;
+            font-weight: 500;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== 响应式微调 ===== */
+        @media (max-width: 420px) {
+            #homeView {
+                padding-top: 420px;  /* 500 - 80 */
+            }
+            .home-card {
+                padding: 24px 16px 28px;
+                border-radius: 24px;
+            }
+            .result-card {
+                padding: 18px 14px 22px;
+                border-radius: 24px;
+            }
+            #certificateContainer {
+                width: 320px;
+            }
+            #certificate {
+                padding: 140px 28px 16px;
+                font-size: 14px;
+            }
+            .cert-stamp {
+                width: 60px;
+                height: 60px;
+                bottom: 20px;
+                right: 20px;
+            }
+            .btn-back {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+            .result-header .title {
+                font-size: 15px;
+            }
+            .cert-disclaimer {
+                font-size: 9px !important;
+                bottom: 26px;
+                left: 28px;
+            }
+            .cert-footer {
+                margin-top: 1.6em;
+            }
+            .save-hint {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            #homeView {
+                padding-top: 320px;  /* 500 - 180 */
+            }
+            .home-card {
+                padding: 16px 12px 20px;
+            }
+            .result-card {
+                padding: 16px 12px 20px;
+            }
+            #certificate {
+                padding: 120px 22px 12px;
+                font-size: 12px;
+            }
+            .cert-stamp {
+                width: 50px;
+                height: 50px;
+                bottom: 14px;
+                right: 14px;
+            }
+            .cert-disclaimer {
+                font-size: 8px !important;
+                bottom: 20px;
+                left: 22px;
+            }
+            .cert-footer {
+                margin-top: 1.2em;
+            }
+            .save-hint {
+                font-size: 10px;
+                padding: 2px 8px;
+            }
+        }
+
+        /* 安全区域适配 */
+        @supports (padding: max(0px)) {
+            #homeView {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+            }
+            #resultView {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 加载遮罩 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">正在生成纪念书…</div>
+    </div>
+
+    <!-- 首页 -->
+    <div class="view active" id="homeView">
+        <div class="home-card">
+            <form id="certForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="nameInput">姓名 <span class="required">*</span></label>
+                    <input type="text" id="nameInput" placeholder="请输入您的姓名" value="" maxlength="20" required>
+                </div>
+                <div class="form-group">
+                    <label for="yearSelect">加入农工党时间（年份） <span class="required">*</span></label>
+                    <select id="yearSelect" required></select>
+                </div>
+                <button type="button" class="btn-generate" id="generateBtn">生成我的纪念书</button>
+            </form>
+            <div style="text-align: center; margin-top: 16px;">
+                <div class="participant-count">
+                    <span id="participantNum" class="num">0</span> 人参与纪念活动
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结果页 -->
+    <div id="resultView">
+        <div class="result-card">
+            <div class="result-header">
+                <div class="title">📖 纪念书 <small>已生成</small></div>
+                <button class="btn-back" id="backBtn">← 返回首页</button>
+            </div>
+            <div id="certificateImageWrapper">
+                <img id="certImage" src="" alt="纪念书" style="display:none;">
+                <div style="width:100%; max-width:400px; aspect-ratio:1/1.42; background:#f0ebe3; border-radius:16px; display:flex; align-items:center; justify-content:center; color:#b8957a; font-size:14px; letter-spacing:2px; border:2px dashed #dccfc4;" id="placeholderCert">
+                    ⏳ 生成中…
+                </div>
+            </div>
+            <div class="save-hint">
+                <span class="icon">↑</span> 长按上方图片 · 保存到手机
+            </div>
+        </div>
+    </div>
+
+    <!-- 纪念书容器（截图） -->
+    <div id="certificateContainer">
+        <div id="certificate">
+            <div class="cert-stamp"></div>
+            <div class="cert-body">
+                <div class="cert-text">
+                    <span class="highlight-name" id="certNameDisplay">韦黎莎</span> 同志：<br>
+                    <span class="indent">
+                        您于 <span id="certYearDisplay">2026</span> 年加入中国农工民主党，至今已光荣在党
+                        <span class="highlight-years">
+                            <span class="highlight-years-num" id="certYearsNum">1</span>
+                            <span style="font-weight:400;">年</span>
+                        </span>。
+                    </span>
+                    <span class="indent">
+                        值中国农工民主党吉林省委员会成立<span style="font-weight:700;">40</span>周年之际，特此纪念。
+                    </span>
+                    <div class="cert-spacer"></div>
+                    <div class="cert-spacer"></div>
+                </div>
+            </div>
+            <div class="cert-footer">
+                <div class="org">中国农工民主党吉林省委员会</div>
+                <div class="date" id="certDateDisplay">2026年09月04日</div>
+            </div>
+            <div class="cert-disclaimer">（此页仅供活动纪念，不作入党证明等使用）</div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // DOM 引用
+            const homeView = document.getElementById('homeView');
+            const resultView = document.getElementById('resultView');
+            const nameInput = document.getElementById('nameInput');
+            const yearSelect = document.getElementById('yearSelect');
+            const generateBtn = document.getElementById('generateBtn');
+            const backBtn = document.getElementById('backBtn');
+            const certImage = document.getElementById('certImage');
+            const placeholderCert = document.getElementById('placeholderCert');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const participantNum = document.getElementById('participantNum');
+
+            const certContainer = document.getElementById('certificateContainer');
+            const certNameDisplay = document.getElementById('certNameDisplay');
+            const certYearDisplay = document.getElementById('certYearDisplay');
+            const certYearsNum = document.getElementById('certYearsNum');
+            const certDateDisplay = document.getElementById('certDateDisplay');
+
+            // ---------- 统计 ----------
+            function getCount() {
+                let count = localStorage.getItem('certCount');
+                if (count === null) count = 0;
+                else count = parseInt(count, 10) || 0;
+                return count;
+            }
+            function incrementCount() {
+                let count = getCount() + 1;
+                localStorage.setItem('certCount', count.toString());
+                return count;
+            }
+            function updateParticipantDisplay() {
+                participantNum.textContent = getCount();
+            }
+            updateParticipantDisplay();
+
+            // ---------- 年份下拉，默认今年 ----------
+            function populateYears() {
+                const currentYear = new Date().getFullYear();
+                const startYear = 1980;
+                yearSelect.innerHTML = '';
+                for (let y = currentYear; y >= startYear; y--) {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.textContent = y + ' 年';
+                    if (y === currentYear) opt.selected = true;
+                    yearSelect.appendChild(opt);
+                }
+            }
+            populateYears();
+
+            // ---------- 视图切换 ----------
+            function showHome() {
+                homeView.classList.add('active');
+                resultView.classList.remove('active');
+                resultView.style.display = 'none';
+                certImage.style.display = 'none';
+                placeholderCert.style.display = 'flex';
+                updateParticipantDisplay();
+                certContainer.style.opacity = '0';
+            }
+            function showResult() {
+                homeView.classList.remove('active');
+                resultView.style.display = 'flex';
+                resultView.classList.add('active');
+            }
+
+            // ---------- 生成纪念书 ----------
+            async function generateCertificate() {
+                const name = nameInput.value.trim();
+                if (name === '') {
+                    alert('请输入您的姓名');
+                    nameInput.focus();
+                    return;
+                }
+                const year = parseInt(yearSelect.value, 10);
+                if (!year) {
+                    alert('请选择加入农工党的年份');
+                    return;
+                }
+                const now = new Date();
+                const currentYear = now.getFullYear();
+                const yearsCount = currentYear - year + 1;
+                if (yearsCount < 1) {
+                    alert('加入年份不能晚于今年');
+                    return;
+                }
+
+                certNameDisplay.textContent = name;
+                certYearDisplay.textContent = year;
+                certYearsNum.textContent = yearsCount;
+                const yStr = now.getFullYear();
+                const mStr = String(now.getMonth() + 1).padStart(2, '0');
+                const dStr = String(now.getDate()).padStart(2, '0');
+                certDateDisplay.textContent = yStr + '年' + mStr + '月' + dStr + '日';
+
+                const newCount = incrementCount();
+                participantNum.textContent = newCount;
+
+                loadingOverlay.classList.add('show');
+                await new Promise(resolve => requestAnimationFrame(resolve));
+
+                certContainer.style.opacity = '1';
+                await new Promise(resolve => requestAnimationFrame(resolve));
+
+                const certElement = document.getElementById('certificate');
+                try {
+                    const rect = certElement.getBoundingClientRect();
+                    const canvas = await html2canvas(certElement, {
+                        scale: 2.8,
+                        useCORS: true,
+                        allowTaint: false,
+                        backgroundColor: '#fcf6ed',
+                        width: rect.width,
+                        height: rect.height,
+                        onclone: function(doc) {
+                            const cloned = doc.getElementById('certificateContainer');
+                            if (cloned) cloned.style.opacity = '1';
+                        }
+                    });
+                    const imgData = canvas.toDataURL('image/png');
+                    certImage.src = imgData;
+                    certImage.style.display = 'block';
+                    placeholderCert.style.display = 'none';
+
+                    certContainer.style.opacity = '0';
+                    showResult();
+                } catch (err) {
+                    console.error(err);
+                    alert('生成失败，请重试。\n' + err.message);
+                    certContainer.style.opacity = '0';
+                } finally {
+                    loadingOverlay.classList.remove('show');
+                }
+            }
+
+            generateBtn.addEventListener('click', generateCertificate);
+            backBtn.addEventListener('click', function() {
+                showHome();
+                certImage.style.display = 'none';
+                placeholderCert.style.display = 'flex';
+                certContainer.style.opacity = '0';
+            });
+            nameInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    generateBtn.click();
+                }
+            });
+            certImage.addEventListener('error', function() {
+                certImage.style.display = 'none';
+                placeholderCert.style.display = 'flex';
+                placeholderCert.textContent = '⚠️ 图片加载失败，请重新生成';
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                showHome();
+            });
+
+            console.log('📜 首页卡片位置已调整为500px');
+        })();
+    </script>
+
+</body>
+</html>
